@@ -115,27 +115,27 @@ library(tidyverse)
 
 
 
-fra_data <- read_fasta("Fragilaria sequences.fasta")
+fragaria <- read_fasta("Fragilaria sequences.fasta")
 
-fra_data
-
-
-
-seq_nchar(fra_data) %>% range()
+fragaria
 
 
-fra_data <- tibble(label = names(fra_data), sequence = fra_data)
+
+seq_nchar(fragaria) %>% range()
 
 
-fra_data <- fra_data %>% 
+fragaria <- tibble(label = names(fragaria), sequence = fragaria)
+
+
+fragaria <- fragaria %>% 
   mutate(genbank_id = str_extract(label, "([^\\s]+)"),
          taxa = str_extract(label, "(?<= ).*")) %>% 
   select(genbank_id, taxa, sequence)
 
-fra_data <- fra_data %>% 
+fragaria <- fragaria %>% 
   mutate(n_base = seq_nchar(sequence))
 
-fra_data
+fragaria
 
 
 #Cropping sequences
@@ -152,23 +152,23 @@ REV <- dna("CAGTWGTWGGTAAATTAGAAGG",
 seq_disambiguate_IUPAC(FWD)
 
 
-fra_data <- fra_data %>% 
+fragaria <- fragaria %>% 
   mutate(barcode = seq_crop_pattern(sequence,
                                     pattern_in = list(FWD),
                                     pattern_out = list(REV)))
 
-fra_data
+fragaria
 
 
-fra_data <- fra_data %>% 
+fragaria <- fragaria %>% 
   filter(seq_nchar(barcode) == 312)
 
-fra_data
+fragaria
 
 
 #Consensus sequences and phylogeny
 
-fra_consensus <- fra_data %>% 
+fra_consensus <- fragaria %>% 
   group_by(taxa) %>% 
   summarise(consensus_barcode = seq_consensus(barcode))
 
