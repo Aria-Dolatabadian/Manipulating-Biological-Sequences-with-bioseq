@@ -114,8 +114,8 @@ library(tidyverse)
 
 
 
-data(fragilaria, package = "bioseq")
-fra_data <- read_fasta(fragilaria)
+
+fra_data <- read_fasta("Fragilaria sequences.fasta")
 
 fra_data
 
